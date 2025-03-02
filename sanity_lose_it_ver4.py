@@ -146,41 +146,48 @@ var_list_fluctuations=[]
 for a in block1:
     flag0+=1
     for b in block2:
+        if block2.index(b)<block1.index(a):
+            continue
         if sf.check_diff(a,b)==False:
             flag1+=1
             continue
         else:
             for c in block3:
-                    if sf.check_diff(a,b,c) == False:
-                        flag2+=1
-                        continue
-                    else:
-                        for d in block4:
-                            w,x,y,z=master_list.index(a),master_list.index(b),master_list.index(c),master_list.index(d)
-                            if [w,x,y,z] in var_list:
+                if block3.index(c)<block2.index(b):
+                    continue
+                if sf.check_diff(a,b,c) == False:
+                    flag2+=1
+                    continue
+                else:
+                    for d in block4:
+                        w,x,y,z=master_list.index(a),master_list.index(b),master_list.index(c),master_list.index(d)
+                        if block4.index(d)<block3.index(c):
+                            continue
+                        
+                        if [w,x,y,z] in var_list:
+                            
+                            var_list.remove([w,x,y,z])
+                            remove_flag+=1
+                            var_list_fluctuations.append(len(var_list))
+                            continue
+                        if sf.check_diff(a,b,c,d)==False:
+                            flag3+=1
+                            #sf.var_check([w,x,y,z],var_list,layer_list)
+                            continue
+                        else:
+                            flag4+=1          
                                 
-                                var_list.remove([w,x,y,z])
-                                remove_flag+=1
-                                var_list_fluctuations.append(len(var_list))
-                                continue
-                            if sf.check_diff(a,b,c,d)==False:
-                                flag3+=1
-                                #sf.var_check([w,x,y,z],var_list,layer_list)
-                                continue
-                            else:
-                                flag4+=1          
-                                 
-                                #for json                      
-                                dict1={"Soln_rank": flag4,"List0":a, "List1":b,"List2":c, "List3":d,"Position":[w,x,y,z],"SOS":0}
-                                possible_solution.append(dict1)
-                                
-                               
-                                sf.var_check([w,x,y,z],var_list,layer_list)
-                                
-                                #possible_solution.append([a,b,c,d])
-                                #sf.write2file([a,b,c,d],ver_name)
-                        time_di=sf.time_diff(start_time)
-                        print(f"{time_di:0.1f}\t{flag0:,}\t{flag1:0.1e}\t\t{flag2:0.1e}\t\t{flag3:0.1e}\t\t{flag4:,}\t\t{len(possible_solution):,}\t\t{remove_flag:,}\t\t{len(var_list):,}", end="\r")
+                            #for json                      
+                            dict1={"Soln_rank": flag4,"List0":a, "List1":b,"List2":c, "List3":d,"Position":[w,x,y,z],"SOS":0}
+                            possible_solution.append(dict1)
+                            
+                            
+                            sf.var_check([w,x,y,z],var_list,layer_list)
+                            
+                            #possible_solution.append([a,b,c,d])
+                            #sf.write2file([a,b,c,d],ver_name)
+                    time_di=sf.time_diff(start_time)
+                    print(f"{time_di:0.1f}\t{flag0:,}\t{flag1:0.1e}\t\t{flag2:0.1e}\t\t{flag3:0.1e}\t\t{flag4:,}\t\t{len(possible_solution):,}\t\t{remove_flag:,}\t\t{len(var_list):,}", end="\r")
 
 print("\n")
 print(len(possible_solution))
