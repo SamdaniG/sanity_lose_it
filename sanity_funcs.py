@@ -34,12 +34,12 @@ def rotations(a,layer_list):
         lay_list.append(app)
     return lay_list
 
-def var_check(a,var_list,layer_list):
+def var_check(a,var_dict,layer_list):
     for layer in layer_list:
         app=[a[layer[0]],a[layer[1]],a[layer[2]],a[layer[3]]]
         #ythough=[comb[0](a), comb[1](b), comb[2](c), comb[3](d)]
-        var_list.append(app)
-    return var_list
+        var_dict[tuple(app)]=1
+    #return var_dict
 
 def final_check(yo,rotation_list):
     a,b,c,d=yo

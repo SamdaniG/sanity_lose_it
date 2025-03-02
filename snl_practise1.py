@@ -15,7 +15,21 @@ layer_list.remove([0,1,2,3])
 var_list=[]
 a=[0,83,207,252]
 var_list=sf.var_check(a,var_list,layer_list)
-for b in var_list:
+"""for b in var_list:
     print(b)
 
-print(len(var_list))
+print(len(var_list))"""
+
+yo=[1,2,3,4]
+dict={}
+dict[tuple(yo)]=0
+
+print(dict[tuple(yo)])
+
+yo1=[1,2,3,45]
+dict[tuple(yo1)]=1
+
+print(dict)
+
+if dict[(1,2,3,4)]==0 in dict:
+    print(True)

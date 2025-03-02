@@ -91,103 +91,75 @@ flag3=0
 flag4=0
 flag0=0
 remove_flag=0
-"""#failed attempt
+
 
 start_time=time.time()
-rng=len(master_list)
-post_master_list=[]
-for w in range(rng):
-    a=master_list[w]
-    flag0+=1
-    for x in range(rng):
-        b=master_list[x]
-        if len({w,x})!=2:
-            flag1+=1
-            continue
-        elif sf.check_diff(a,b)==False:
-            flag1+=1
-            continue
-        else:
-            for y in range(rng):
-                c=master_list[x]
-                if len({w,x,y})!=3:
-                    flag2+=1
-                    continue
-                elif sf.check_diff(a,b,c)==False:
-                    flag2+=1
-                    continue
-                else:
-                    for z in range(rng):
-                        d=master_list[z]
-                        if len({w,x,y,z})!=4:
-                            flag3+=1
-                            continue
-                        elif sf.check_diff(a,b,c,d)==False:
-                            flag3+=1
-                            continue
-                        else:
-                            post_master_list.append([w,x,y,z])
-                            flag4+=1
-            time_di=sf.time_diff(start_time)
-            print(f"{time_di:0.1f}\t{flag0:,}\t{flag1:0.1e}\t\t{flag2:0.1e}\t\t{flag3:0.1e}\t\t{flag4:,}\t\t{len(post_master_list):0.1e}", end="\r")
-            #print(f"{time_di:0.1f}\t\t{flag0:,}\t\t\t{len(post_master_list):,}",end="\r")
-sf.write2file(post_master_list,ver_name)
 
-"""
-start_time=time.time()
-#final calcs
-#print(f"The check value tells us how many of them scenarios had flag=0, and check1 tells us how many of them had flags more than 1")
-#print(f"\nTime\tFlag0\tFlag1\t\tFlag2\t\tFlag3\t\tFlag4\t\tCheck\tCheck1\tPossible solutions")
 print(f"\nTime\tFlag0\tFlag1\t\tFlag2\t\tFlag3\t\tFlag4\t\tPossible solutions")
 
-var_list=[]         #this list is the variations of the 4 blocks, 0 1 2 3 , 3 2 1 0
+#var_list=[]         #this list is the variations of the 4 blocks, 0 1 2 3 , 3 2 1 0
+var_dict={}         # #this dict is the variations of the 4 blocks, 0 1 2 3 , 3 2 1 0
 var_list_fluctuations=[]
 #final calcs
 for a in block1:
     flag0+=1
     for b in block2:
-        if block2.index(b)<block1.index(a):
+        
+        if block2.index(b)<=block1.index(a):
             continue
+        
         if sf.check_diff(a,b)==False:
             flag1+=1
             continue
         else:
             for c in block3:
-                if block3.index(c)<block2.index(b):
+                
+                if block3.index(c)<=block2.index(b):
                     continue
+                
                 if sf.check_diff(a,b,c) == False:
                     flag2+=1
                     continue
                 else:
                     for d in block4:
                         w,x,y,z=master_list.index(a),master_list.index(b),master_list.index(c),master_list.index(d)
-                        if block4.index(d)<block3.index(c):
+                        
+                        if block4.index(d)<=block3.index(c):
                             continue
                         
+                        
+                        """                        
                         if [w,x,y,z] in var_list:
                             
                             var_list.remove([w,x,y,z])
                             remove_flag+=1
                             var_list_fluctuations.append(len(var_list))
                             continue
+                        
+                        """
+                        """
+                        if (w,x,y,z) in var_dict and var_dict[(w,x,y,z)]==1:
+                            #print("Triggered")
+                            continue
+                        """
                         if sf.check_diff(a,b,c,d)==False:
                             flag3+=1
                             #sf.var_check([w,x,y,z],var_list,layer_list)
                             continue
                         else:
                             flag4+=1          
-                                
+                            sos=sf.final_check([a,b,c,d],rotation_list)
                             #for json                      
-                            dict1={"Soln_rank": flag4,"List0":a, "List1":b,"List2":c, "List3":d,"Position":[w,x,y,z],"SOS":0}
+                            dict1={"Soln_rank": flag4,"List0":a, "List1":b,"List2":c, "List3":d,"Position":[w,x,y,z],"Flags":sos}
                             possible_solution.append(dict1)
                             
                             
-                            sf.var_check([w,x,y,z],var_list,layer_list)
+                            #sf.var_check([w,x,y,z],var_dict,layer_list)
                             
                             #possible_solution.append([a,b,c,d])
                             #sf.write2file([a,b,c,d],ver_name)
-                    time_di=sf.time_diff(start_time)
-                    print(f"{time_di:0.1f}\t{flag0:,}\t{flag1:0.1e}\t\t{flag2:0.1e}\t\t{flag3:0.1e}\t\t{flag4:,}\t\t{len(possible_solution):,}\t\t{remove_flag:,}\t\t{len(var_list):,}", end="\r")
+                            time_di=sf.time_diff(start_time)
+                            print(f"{time_di:05.1f}\t{flag0:0>3,d}\t{flag1:0.1e}\t\t{flag2:0.1e}\t\t{flag3:0.1e}\t\t{flag4:0>6,d}\t\t{w :03} {x :03} {y :03} {z :03} {sos:00} ({flag0/len(master_list)*100:04.1f}%)", end="\r")
 
 print("\n")
 print(len(possible_solution))
@@ -199,7 +171,7 @@ with open(f"{ver_name}.json", "w") as file:
     json_string = json_string.replace("\n        [", "[").replace("\n            ", "").replace("\n        ]", "]").replace("    ","")
     file.write(json_string)
 
-
+"""
 
 import matplotlib.pyplot as plt
 
@@ -210,6 +182,6 @@ plt.xlabel('Index (Auto)')
 plt.ylabel('Value')
 plt.show()
 
-
+"""
 print(len(master_list))
 print(f"The file has finally finished running\a")
