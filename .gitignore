@@ -1,0 +1,13 @@
+# Python compiled files
+__pycache__/
+**/__pycache__/
+
+.venv/
+
+.idea/
+
+Sanity_Lose_It/
+
+Sanity_Lose_It.zip
+
+

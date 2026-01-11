@@ -1,0 +1,35 @@
+08-Jan-2026 02:43:35-0500 DEBUG    		Time taken to run the final_cook: 11.0510s
+08-Jan-2026 02:43:35-0500 INFO     The master list has been written to output\ver10\08Jan2026_024335_ver10_final_cook.json
+08-Jan-2026 02:43:35-0500 DEBUG    		Time taken to run the write_master_list_to_file: 0.3321s
+08-Jan-2026 02:43:35-0500 DEBUG    		Time taken to run the creating_rotation_list: 0.0030s
+08-Jan-2026 02:43:35-0500 DEBUG    		Time taken to run the creating_layer_list: 0.0000s
+08-Jan-2026 02:45:35-0500 INFO     ----------------Starting calcs----------------
+08-Jan-2026 02:45:35-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1080
+08-Jan-2026 02:45:35-0500 DEBUG    		Time taken to run the creating_the_block: 0.0059s
+08-Jan-2026 02:45:35-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 0.6126s
+08-Jan-2026 02:46:27-0500 INFO     ----------------Starting calcs----------------
+08-Jan-2026 02:46:27-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1080
+08-Jan-2026 02:46:27-0500 DEBUG    		Time taken to run the creating_the_block: 0.0055s
+08-Jan-2026 02:46:28-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 0.5396s
+08-Jan-2026 02:47:40-0500 DEBUG    		Time taken to run the final_cook: 72.6288s
+08-Jan-2026 02:47:49-0500 INFO     The master list has been written to output\ver10\08Jan2026_024740_ver10_final_cook.json
+08-Jan-2026 02:47:49-0500 DEBUG    		Time taken to run the write_master_list_to_file: 8.6516s
+08-Jan-2026 02:47:49-0500 DEBUG    		Time taken to run the creating_rotation_list: 0.0021s
+08-Jan-2026 02:47:49-0500 DEBUG    		Time taken to run the creating_layer_list: 0.0000s
+08-Jan-2026 11:03:21-0500 INFO     Test
+08-Jan-2026 11:04:10-0500 INFO     Test
+08-Jan-2026 11:04:17-0500 INFO     Test
+08-Jan-2026 11:04:50-0500 INFO     Test
+08-Jan-2026 11:05:45-0500 INFO     Test
+08-Jan-2026 11:06:30-0500 INFO     Test
+08-Jan-2026 11:06:57-0500 INFO     Test
+08-Jan-2026 11:07:49-0500 INFO     Test
+08-Jan-2026 11:08:03-0500 INFO     Test
+08-Jan-2026 11:08:24-0500 INFO     Test
+08-Jan-2026 11:08:39-0500 INFO     Test
+08-Jan-2026 11:09:37-0500 INFO     Test
+08-Jan-2026 11:11:05-0500 INFO     Test
+08-Jan-2026 11:11:12-0500 INFO     Test
+08-Jan-2026 11:11:43-0500 INFO     Test
+08-Jan-2026 11:11:52-0500 INFO     Test
+08-Jan-2026 11:12:19-0500 INFO     Test

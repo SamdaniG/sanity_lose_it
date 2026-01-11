@@ -1,0 +1,35 @@
+07-Jan-2026 20:01:57-0500 INFO     ----------------Starting calcs----------------
+07-Jan-2026 20:01:57-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1080
+07-Jan-2026 20:01:57-0500 DEBUG    		Time taken to run the creating_the_block: 0.0032s
+07-Jan-2026 20:01:57-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 0.3645s
+07-Jan-2026 20:02:03-0500 DEBUG    		Time taken to run the final_cook: 5.8652s
+07-Jan-2026 20:02:03-0500 DEBUG    		Time taken to run the write_master_list_to_file: 0.1278s
+07-Jan-2026 20:02:03-0500 DEBUG    		Time taken to run the creating_rotation_list: 0.0010s
+07-Jan-2026 20:12:29-0500 DEBUG    		Time taken to run the sort: 626.2355s
+07-Jan-2026 20:12:29-0500 INFO     Sorting is done!
+07-Jan-2026 20:12:36-0500 INFO     The file has finally finished running and the file names are output\ver10\07Jan2026_201229_ver10_.json and output\ver10\07Jan2026_201229_ver10_least_sos.json
+07-Jan-2026 20:12:36-0500 DEBUG    		Time taken to run the write_sos_to_file: 7.0200s
+07-Jan-2026 20:12:36-0500 DEBUG    		Time taken to run the main: 639.6690s
+
+07-Jan-2026 20:25:40-0500 INFO     ----------------Starting calcs----------------
+07-Jan-2026 20:25:40-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1080
+07-Jan-2026 20:25:40-0500 DEBUG    		Time taken to run the creating_the_block: 0.0050s
+07-Jan-2026 20:25:40-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 0.5515s
+07-Jan-2026 20:25:47-0500 DEBUG    		Time taken to run the final_cook: 6.9892s
+07-Jan-2026 20:27:20-0500 INFO     ----------------Starting calcs----------------
+07-Jan-2026 20:27:20-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1080
+07-Jan-2026 20:27:20-0500 DEBUG    		Time taken to run the creating_the_block: 0.0030s
+07-Jan-2026 20:27:21-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 0.3424s
+07-Jan-2026 20:27:26-0500 DEBUG    		Time taken to run the final_cook: 5.7044s
+07-Jan-2026 20:27:27-0500 INFO     The master list has been written to output\ver10\07Jan2026_202726_ver10_final_cook.json
+07-Jan-2026 20:27:27-0500 DEBUG    		Time taken to run the write_master_list_to_file: 0.1185s
+07-Jan-2026 20:27:27-0500 DEBUG    		Time taken to run the creating_rotation_list: 0.0011s
+07-Jan-2026 20:37:18-0500 DEBUG    		Time taken to run the sort: 591.6416s
+07-Jan-2026 20:37:18-0500 INFO     Sorting is done!
+07-Jan-2026 20:37:25-0500 INFO     The file has finally finished running and the file names are output\ver10\07Jan2026_203718_ver10.json and output\ver10\07Jan2026_203718_ver10_least_sos.json
+07-Jan-2026 20:37:25-0500 DEBUG    		Time taken to run the write_sos_to_file: 7.0200s
+07-Jan-2026 20:37:25-0500 INFO     The logs can be found at logs/logs.log!
+07-Jan-2026 20:37:25-0500 DEBUG    		Time taken to run the main: 604.8842s
+07-Jan-2026 20:44:17-0500 INFO     ----------------Starting calcs----------------
+07-Jan-2026 20:44:17-0500 DEBUG    		Time taken to run the creating_rotation_list: 0.0010s
+07-Jan-2026 20:44:17-0500 DEBUG    		Time taken to run the creating_layer_list: 0.0000s
