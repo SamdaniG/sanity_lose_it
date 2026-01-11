@@ -1,8 +1,10 @@
 # Python compiled files
 __pycache__/
 **/__pycache__/
+*.pyc
 
-.venv/
+
+
 
 .idea/
 
@@ -17,4 +19,10 @@ output/ver4/ver4_for3.json
 output/ver6/ver6_test_3.json
 output/ver7/ver7_finale_4.json
 output/ver7/ver7_finale_3.json
-output/ver10/
+output/ver10/11Jan2026_141358_ver10_final_cook.json
+output/ver10/11Jan2026_142502_ver10_final_cook.json
+output/ver10/output.txt
+output/ver10/08Jan2026_024740_ver10_final_cook.json
+output/ver10/ver10_3_least_sos_06Jan2026_202601.json
+output/ver10/ver10_3_06Jan2026_202601.json
+
