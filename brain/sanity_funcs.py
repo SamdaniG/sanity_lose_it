@@ -1,7 +1,6 @@
 import time, csv,json
 import  logging.config
 
-
 def set_logger(parent_dir,ver_name):
     """This sets up the logging module!"""
     config_file = parent_dir / "logs" / "log_config.json"
@@ -49,15 +48,6 @@ def check_diff(*args: list,num=4, x=1, y=5):
         flag += 1
     return flag==num
 
-def time_diff(a:time):
-    end_time=time.time()
-    diff=(end_time-a)/60
-
-    if diff<1:
-        return diff*60
-    else:
-        return diff
-
 def rotations(a,layer_list):
     lay_list=[]  # [3, 2, 1, 0]
     for layer in layer_list:
@@ -92,6 +82,43 @@ def final_check(yo,rotation_list):
     #return flag==1
     return flag
 
+def master_check(cook, rotation_list, master_list, compatible_blocks):
+    # cook=[0,23,4343,53434]
+    a,b,c,d = cook
+    # a = master_list[w]
+    # b = master_list[x]
+    # c = master_list[y]
+    # d = master_list[z]
+
+    flag = 0
+    index_map = {tuple(v): i for i, v in enumerate(master_list)}
+    for comb in rotation_list:
+        a1, b1, c1, d1 = comb[0](a), comb[1](b), comb[2](c), comb[3](d)
+        w1 = index_map[tuple(a1)]
+        x1 = index_map[tuple(b1)]
+        y1 = index_map[tuple(c1)]
+        z1 = index_map[tuple(d1)]
+
+
+    # for comb in rotation_list:
+    #     a1,b1,c1,d1=comb[0](a), comb[1](b), comb[2](c), comb[3](d)
+    #     w1,x1,y1,z1 = master_list.index(a1), master_list.index(b1), master_list.index(c1), master_list.index(d1)
+
+        if  {w1,x1} in compatible_blocks and     \
+            {w1, y1} in compatible_blocks and   \
+            {w1, z1} in compatible_blocks and \
+            {x1, y1} in compatible_blocks and \
+            {x1, z1} in compatible_blocks and \
+            {y1, z1} in compatible_blocks:
+            # print(f"{a1}\n{b1}\n{c1}\n{d1}")
+            # print(f"{check_diff(a1,b1,c1,d1)}")
+            flag+=1
+
+        if flag>4:
+            break
+
+    return flag
+
 def final_check_v9(yo,rotation_list):
     a,b,c,d=yo
     flag=0
@@ -101,7 +128,7 @@ def final_check_v9(yo,rotation_list):
     for comb in rotation_list:
         #flag += check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d),num=6)
         #i+=1
-        finalee=check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d),num=6,x=0,y=6)
+        finalee=check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d))#,num=6,x=0,y=6)
         if finalee==True:
             flag+=1
         if flag>4:
@@ -162,19 +189,6 @@ def l3(a):
 def m0(a):
     return a 
 
-def write2file(yolist,name):
-    """#for csv
-    with open(f'{name}.csv', 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(yolist)  # Write all the rows at once
-        writer.writerow([])
-
-    """
-    #for json
-    with open(f'{name}.json', "w") as file:
-        json.dump(yolist, file)
-
-
 def check_perms(check_list:list):
     perm_list=[]
     rotation=[u1,u2,u3,l1,l2,l3]
@@ -184,57 +198,3 @@ def check_perms(check_list:list):
         #print(rot)
             perm_list.append(rot(fax))
     return perm_list
-
-
-"""   
-
-def check_diff2(a,b,num=3,x=1,y=5):
-    flag=0
-    for i in range(x,y):
-        sample_set={a[i],b[i]}
-        if len(sample_set)==2:
-            flag+=1
-            continue
-        else:
-            break
-    return flag==num
-
-def check_diff3(a,b,c,num=3,x=1,y=5):
-    flag=0
-    for i in range(x,y):
-        sample_set={a[i],b[i],c[i]}
-        if len(sample_set)==3:
-            flag+=1
-            continue
-        else:
-            break
-    return flag==num
-
-def check_diff4(a,b,c,d,num=3,x=1,y=5):
-    flag=0
-    for i in range(x,y):
-        sample_set={a[i],b[i],c[i],d[i]}
-        if len(sample_set)==4:
-            flag+=1
-            continue
-        else:
-            break
-    return flag==num
-
-
-def check_diff_finale(a,b,c,d):
-    flag=0
-    element_check=[1,2,3,4]
-    for i in element_check:
-        sample_set={a[i],b[i],c[i],d[i]}
-        if len(sample_set)==4:
-            flag+=1
-            continue
-        else:
-            break
-    if flag==6:
-        return 1
-    else:
-        return 0
-
-"""

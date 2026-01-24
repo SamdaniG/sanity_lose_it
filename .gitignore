@@ -14,6 +14,7 @@ Sanity_Lose_It.zip
 
 
 #Ignore large output files
+output/
 output/ver3/ver3.json
 output/ver4/ver4_for3.json
 output/ver6/ver6_test_3.json

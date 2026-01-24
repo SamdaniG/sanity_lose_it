@@ -4,6 +4,13 @@ import sanity_funcs as sf
 from functools import wraps
 from pathlib import Path
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+MULTIPLICITY_PARAMETER=int(os.getenv("multiplicity_parameter"))
+DEBUG_MODE=os.getenv("debug_mode")=='1'
+
 PARENT_FILE=Path(__file__).resolve().parent.parent
 VER_NAME=Path(__file__).stem.split("_")[-1]
 
@@ -39,22 +46,6 @@ def creating_rotation_list():
     arr.append([sf.m0, sf.m0, sf.m0, sf.m0])
     return arr
 
-#@time_taken
-def creating_layer_list():
-    """This creates the layer's shuffle list, basically ensures that layers of the blocks are also shuffled,
-    like block A<B<C<D can also be stacked as D<C<A<B"""
-    arr = []
-    rots = [0, 1, 2, 3]
-    for u in rots:
-        for v in rots:
-            for x in rots:
-                for y in rots:
-                    counter = sf.multiplicity_check([u, v, x, y], 1)
-                    if counter == 0:
-                        arr.append([u, v, x, y])
-    return arr
-
-
 @time_taken
 def creating_the_block():
     """This function here creates all possible colour combinations possible,
@@ -81,7 +72,7 @@ def creating_the_block():
                             #if counter==xyz:
                             #print(xyz)
                             #if len(check)==4 and counter==2:
-                            if len(check) == 4 and counter <= 3:
+                            if len(check) == 4 and counter <= MULTIPLICITY_PARAMETER:
                                 arr.append(yo)
                             i+=1
 
@@ -97,6 +88,8 @@ def creation_of_compatible_blocks(master_list):
     Input: Master List (Master list of all possible combinations of cube)
     Output: Dictionary of all compatible blocks"""
     sets = {}
+    incomp=[]
+    comp=[]
     for w, a in enumerate(master_list):
         for x, b in enumerate(master_list):
             if x <= w:
@@ -110,7 +103,12 @@ def creation_of_compatible_blocks(master_list):
 
                 sets[w].add(x)
                 sets[x].add(w)
-    return sets
+                comp.append({w,x})
+            # else:
+            #     incomp.append({w,x})
+
+    # print(f"Size of comp = {len(comp)}, length of incomp= {len(incomp)}")
+    return sets,comp
 
 @time_taken
 def final_cook(master_list,sets):
@@ -122,7 +120,8 @@ def final_cook(master_list,sets):
     arr=[]
     flag0,flag1=0,0
     permflag={'w':0,'x':0,'y':0}
-    print(f"No\t\tFlag0\t\tFlag1\t\tPermFlag\t\tLen")
+    logger.debug(f"No\t\tFlag0\t\tFlag1\t\tPermFlag\t\tLen")
+    found=False
     for w,a in enumerate(master_list):
         perm_list_w=sf.check_perms([a])
         for x,b in enumerate(master_list):
@@ -170,16 +169,23 @@ def final_cook(master_list,sets):
                         arr.append([w,x,y,z])
                 else:
                     continue
-        print(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}",end="\r")
 
-        #For debugging
-        # if w > 5:
-        #     break
+            # # For debugging
+            if DEBUG_MODE and x > 5:
+                found=True
+                break
+
+        print(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}",end="\r")
+        if found:
+            break
+
     print("\n")
+    logger.debug(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}")
+
     return arr
 
 @time_taken
-def sort(final_solution,master_list):
+def sort(final_solution,master_list,compatible_blocks):
     """This is where the final sort happens and we find out how many unique solutions we have for each stack
     flag=1 denotes that only 1 particular combination has no repetitive colours, ie our solution
     input: final_solution, list of all possible stacks
@@ -187,26 +193,26 @@ def sort(final_solution,master_list):
 
     #Creating the rotation list
     rotation_list = creating_rotation_list()
-    layer_list=creating_layer_list()
     sos_list=[]
     least_sos=[]
     sos1=4
-    for cook in final_solution:
+    for pos, cook in enumerate(final_solution):
         w,x,y,z=cook
         a=master_list[w]
         b=master_list[x]
         c=master_list[y]
         d=master_list[z]
         sos = sf.final_check_v9([a, b, c, d], rotation_list)#, layer_list)
+        #sos=sf.master_check([a, b, c, d],rotation_list,master_list,compatible_blocks)
         # for json
-        dict1 = {"List0": a, "List1": b, "List2": c, "List3": d,
+        dict1 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
                  "Flags": sos, "Position": [w, x, y, z]}
         sos_list.append(dict1)
 
 
         if sos <= sos1:
             sos1 = sos
-            dict2 = {"List0": a, "List1": b, "List2": c, "List3": d,
+            dict2 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
                      "Flags": sos, "Position": [w, x, y, z]}
             least_sos.append(dict2)
 
@@ -245,8 +251,8 @@ def write_master_list_to_file(final_solution, parent_dir):
     file_loc= parent_dir / "output" / "ver10"
     fname = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_ver10_final_cook.json'
     with open(fname, "w") as f:
-        for row in final_solution:
-            f.write(f"{row}\n")
+        for index,row in enumerate(final_solution):
+            f.write(f"{index:05d}\t{row}\n")
     rel_file=fname.relative_to(parent_dir)
     logger.info(f"The master list has been written to {rel_file}")
 
@@ -254,12 +260,15 @@ def write_master_list_to_file(final_solution, parent_dir):
 def main():
     logger.info("----------------Starting calcs----------------")
 
+    logger.info(f"The multiplicity check is set at {MULTIPLICITY_PARAMETER}")
+    logger.info(f"The internal debug mode is set at {DEBUG_MODE}")
+
     #Master list contains all the possible permutations and combinations possible for 4 colours to be placed on 6 faces
     master_list = creating_the_block()
 
     #This creates a list of compatible blocks for a particular block X, so when X and another block from the compatible blocks
     # are placed on top of each other, there would be no repetitive colout
-    sets = creation_of_compatible_blocks(master_list)
+    sets, compatible_blocks = creation_of_compatible_blocks(master_list)
 
     #This is the final cook, where we find out how many solutions each combination of block has
     final_solution = final_cook(master_list,sets)
@@ -268,7 +277,7 @@ def main():
     write_master_list_to_file(final_solution, PARENT_FILE)
 
     #This segregates the solutions so that we finally have the list of the combinations of the block that will give us a unique solution
-    sos, least_sos = sort(final_solution,master_list)
+    sos, least_sos = sort(final_solution,master_list,compatible_blocks)
     logger.info(f"Sorting is done!")
 
     #Writing those to a file!
