@@ -83,3 +83,20 @@
 24-Jan-2026 02:38:57-0500 DEBUG    		Time taken to run the write_sos_to_file: 0.0183s
 24-Jan-2026 02:38:57-0500 INFO     The logs can be found at logs/ver10_logs.log
 24-Jan-2026 02:38:57-0500 DEBUG    		Time taken to run the main: 3.0904s
+24-Jan-2026 02:52:05-0500 INFO     ----------------Starting calcs----------------
+24-Jan-2026 02:52:05-0500 INFO     The multiplicity check is set at 3
+24-Jan-2026 02:52:05-0500 INFO     The internal debug mode is set at True
+24-Jan-2026 02:52:05-0500 INFO     The total possible scenarios are 4,096, but it comes down to this after duplicity check, 1560
+24-Jan-2026 02:52:05-0500 DEBUG    		Time taken to run the creating_the_block: 0.0042s
+24-Jan-2026 02:52:06-0500 DEBUG    		Time taken to run the creation_of_compatible_blocks: 1.0866s
+24-Jan-2026 02:52:06-0500 DEBUG    No		Flag0		Flag1		PermFlag		Len
+24-Jan-2026 02:52:06-0500 DEBUG    00000000	00000092	00000092	000000302	{'w': 1, 'x': 0, 'y': 0}	302
+24-Jan-2026 02:52:06-0500 DEBUG    		Time taken to run the final_cook: 0.0013s
+24-Jan-2026 02:52:06-0500 INFO     The master list has been written to output\ver10\24Jan2026_025206_ver10_final_cook.json
+24-Jan-2026 02:52:06-0500 DEBUG    		Time taken to run the write_master_list_to_file: 0.0010s
+24-Jan-2026 02:52:07-0500 DEBUG    		Time taken to run the sort: 0.6249s
+24-Jan-2026 02:52:07-0500 INFO     Sorting is done!
+24-Jan-2026 02:52:07-0500 INFO     The file has finally finished running and the file names are output\ver10\24Jan2026_025207_ver10.json and output\ver10\24Jan2026_025207_ver10_least_sos.json
+24-Jan-2026 02:52:07-0500 DEBUG    		Time taken to run the write_sos_to_file: 0.0078s
+24-Jan-2026 02:52:07-0500 INFO     The logs can be found at logs/ver10_logs.log
+24-Jan-2026 02:52:07-0500 DEBUG    		Time taken to run the main: 1.7645s

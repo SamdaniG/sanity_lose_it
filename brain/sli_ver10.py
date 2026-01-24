@@ -223,11 +223,11 @@ def sort(final_solution,master_list,compatible_blocks):
     return  sos_list,least_sos
 
 @time_taken
-def write_sos_to_file(sos, least_sos, parent_dir):
+def write_sos_to_file(sos, least_sos, parent_dir, ver_name):
     """This function writes the solutions to a file!"""
-    file_loc = parent_dir / "output" / "ver10"
-    file_name = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_ver10.json'
-    file_name1 = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_ver10_least_sos.json'
+    file_loc = parent_dir / "output" / ver_name
+    file_name = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_{ver_name}.json'
+    file_name1 = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_{ver_name}_least_sos.json'
 
     with open(file_name, "w") as file:
         json_string = json.dumps(sos, indent=4, separators=(",", ": "), ensure_ascii=False)
@@ -246,10 +246,10 @@ def write_sos_to_file(sos, least_sos, parent_dir):
                 f" and {file_name1.relative_to(parent_dir)}\a")
 
 @time_taken
-def write_master_list_to_file(final_solution, parent_dir):
+def write_master_list_to_file(final_solution, parent_dir, ver_name):
     """This function writes the final solution list to a file!"""
-    file_loc= parent_dir / "output" / "ver10"
-    fname = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_ver10_final_cook.json'
+    file_loc= parent_dir / "output" / ver_name
+    fname = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_{ver_name}_final_cook.json'
     with open(fname, "w") as f:
         for index,row in enumerate(final_solution):
             f.write(f"{index:05d}\t{row}\n")
@@ -274,14 +274,14 @@ def main():
     final_solution = final_cook(master_list,sets)
 
     #This writes the results to a file
-    write_master_list_to_file(final_solution, PARENT_FILE)
+    write_master_list_to_file(final_solution, PARENT_FILE, VER_NAME)
 
     #This segregates the solutions so that we finally have the list of the combinations of the block that will give us a unique solution
     sos, least_sos = sort(final_solution,master_list,compatible_blocks)
     logger.info(f"Sorting is done!")
 
     #Writing those to a file!
-    write_sos_to_file(sos, least_sos,PARENT_FILE)
+    write_sos_to_file(sos, least_sos,PARENT_FILE, VER_NAME)
     logger.info(f"The logs can be found at logs/{VER_NAME}_logs.log")
 
 if __name__=="__main__":
