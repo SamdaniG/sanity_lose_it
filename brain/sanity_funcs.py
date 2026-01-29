@@ -1,6 +1,6 @@
 import time, csv,json
 import  logging.config
-import numpy as np
+#import numpy as np
 
 def set_logger(parent_dir,ver_name):
     """This sets up the logging module!"""
