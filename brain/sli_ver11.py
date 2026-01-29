@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 MULTIPLICITY_PARAMETER=int(os.getenv("multiplicity_parameter"))
 DEBUG_MODE=os.getenv("debug_mode")=='1'
+STRANGLENESS=int(os.getenv("strangled_search"))
 
 PARENT_FILE=Path(__file__).resolve().parent.parent
 VER_NAME=Path(__file__).stem.split("_")[-1]
@@ -81,12 +82,15 @@ def creating_the_block():
     return arr
 
 @time_taken
-def creation_of_compatible_blocks(master_list):
+def creation_of_compatible_blocks(master_list):#,strangleness=0):
     """Well this creates compatible blocks,
     meaning that for a block A what all other blocks
     exist so that there are no repetitive colours
     Input: Master List (Master list of all possible combinations of cube)
     Output: Dictionary of all compatible blocks"""
+    lower_limit=0 if STRANGLENESS==1 else 1
+    upper_limit=6 if STRANGLENESS==1 else 5
+    num_check=6 if STRANGLENESS==1 else 4
     sets = {}
     incomp=[]
     comp=[]
@@ -94,8 +98,8 @@ def creation_of_compatible_blocks(master_list):
         for x, b in enumerate(master_list):
             if x <= w:
                 continue
-            if sf.check_diff(a, b):
-            #if sf.check_diff(a,b,num=6,x=0,y=6):
+            #if sf.check_diff(a, b):
+            if sf.check_diff(a,b,num=num_check,x=lower_limit,y=upper_limit):
                 if w not in sets:
                     sets[w] = set()
                 if x not in sets:
@@ -202,7 +206,8 @@ def sort(final_solution,master_list,compatible_blocks):
         b=master_list[x]
         c=master_list[y]
         d=master_list[z]
-        sos = sf.final_check_v9([a, b, c, d], rotation_list)#, layer_list)
+        sos = sf.final_check_v9([a, b, c, d], rotation_list, STRANGLENESS)#, layer_list)
+        #sos=sf.final_check_v11([a,b,c,d],rotation_list)
         #sos=sf.master_check([a, b, c, d],rotation_list,master_list,compatible_blocks)
         # for json
         dict1 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
@@ -234,12 +239,14 @@ def write_sos_to_file(sos, least_sos, parent_dir, ver_name):
         json_string = json_string.replace("\n        [", "[").replace("\n            ", "").replace("\n        ]",
                                                                                                     "]").replace("    ",
                                                                                                                  "")
+        file.write(f"//{DEBUG_MODE=}\t\t{MULTIPLICITY_PARAMETER= }\t\t{STRANGLENESS= }\n")
         file.write(json_string)
     with open(file_name1, "w") as file:
         json_string = json.dumps(least_sos, indent=4, separators=(",", ": "), ensure_ascii=False)
         json_string = json_string.replace("\n        [", "[").replace("\n            ", "").replace("\n        ]",
                                                                                                     "]").replace("    ",
                                                                                                                  "")
+        file.write(f"//{DEBUG_MODE=}\t\t{MULTIPLICITY_PARAMETER= }\t\t{STRANGLENESS= }\n")
         file.write(json_string)
 
     logger.info(f"The file has finally finished running and the file names are {file_name.relative_to(parent_dir)}"
@@ -249,8 +256,10 @@ def write_sos_to_file(sos, least_sos, parent_dir, ver_name):
 def write_master_list_to_file(final_solution, parent_dir, ver_name):
     """This function writes the final solution list to a file!"""
     file_loc= parent_dir / "output" / ver_name
+    file_loc.mkdir(parents=True, exist_ok=True)
     fname = file_loc / f'{time.strftime("%d%b%Y_%H%M%S")}_{ver_name}_final_cook.json'
     with open(fname, "w") as f:
+        f.write(f"//{DEBUG_MODE=}\t\t{MULTIPLICITY_PARAMETER= }\t\t{STRANGLENESS= }\n")
         for index,row in enumerate(final_solution):
             f.write(f"{index:05d}\t{row}\n")
     rel_file=fname.relative_to(parent_dir)

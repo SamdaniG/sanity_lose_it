@@ -1,0 +1,4 @@
+add a try except else block for those large computing functions..
+allowing to easily skip them and still remain in the function
+
+create a filter for the blocks that have adjacent colours same

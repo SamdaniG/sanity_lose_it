@@ -1,10 +1,16 @@
 import time, csv,json
 import  logging.config
+import numpy as np
 
 def set_logger(parent_dir,ver_name):
     """This sets up the logging module!"""
+
+    log_dir = parent_dir / "logs" / ver_name
+    log_dir.mkdir(parents=True, exist_ok=True)
+
     config_file = parent_dir / "logs" / "log_config.json"
-    log_file= parent_dir / "logs" / f"{ver_name}_logs.log"
+    log_file= log_dir /f"{ver_name}_logs.log"
+
 
     with open(config_file, "r") as f:
         logging_config = json.load(f)
@@ -38,7 +44,8 @@ def multiplicity_check_list(a:list):#a=[1,1,2,2,3,3]
     return max(flag_a)
 
 def check_diff(*args: list,num=4, x=1, y=5):
-    '''This function takes in the lists and we check the uniqeness and returns true if all of them are unique, if needed it can be refined to check
+    '''This function takes in the lists and we check the uniqeness and returns true if all of them are unique,
+    if needed it can be refined to check
     for all faces of the cube be setting x=0, y=6'''
     flag=0
     for i in range(x, y):
@@ -119,16 +126,19 @@ def master_check(cook, rotation_list, master_list, compatible_blocks):
 
     return flag
 
-def final_check_v9(yo,rotation_list):
+def final_check_v9(yo,rotation_list,strangleness):
     a,b,c,d=yo
     flag=0
     #check=0
     #check1=0
     i=0
+    lower_limit=0 if strangleness==1 else 1
+    upper_limit=6 if strangleness==1 else 5
+    num_check=6 if strangleness==1 else 4
     for comb in rotation_list:
         #flag += check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d),num=6)
         #i+=1
-        finalee=check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d))#,num=6,x=0,y=6)
+        finalee=check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d),num=num_check,x=lower_limit,y=upper_limit)
         if finalee==True:
             flag+=1
         if flag>4:
@@ -153,6 +163,27 @@ def final_check_v10(yo,rotation_list,layer_list):
                 flag+=1
             # if flag>4:
             #     break
+
+    return flag
+
+def final_check_v11(yo,rotation_list):
+    a,b,c,d=yo
+    flag=0
+    #check=0
+    #check1=0
+    i=0
+    for comb in rotation_list:
+        #flag += check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d),num=6)
+        #i+=1
+        #finalee=check_diff(comb[0](a), comb[1](b), comb[2](c), comb[3](d))#,num=6,x=0,y=6)
+        sum_ish=np.array(comb[0](a))+ np.array(comb[1](b))+ np.array(comb[2](c))+ np.array(comb[3](d)) - [100,10,10,10,10,100]
+        if np.all(sum_ish[1:5]==0):
+            flag+=1
+
+        # if finalee==True:
+        #     flag+=1
+        if flag>4:
+            break
 
     return flag
 
