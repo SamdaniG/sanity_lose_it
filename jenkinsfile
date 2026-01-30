@@ -1,14 +1,25 @@
 pipeline {
-  agent {
-    docker {
-      image 'python:3.11'
-    }
-  }
+  agent any
+
   stages {
-    stage('Run') {
+    stage('Build image') {
       steps {
-        sh 'python --version'
-        sh 'python brain/sli_ver11.py'
+        script {
+          docker.build(
+            "sanity-python:${BUILD_NUMBER}",
+            "."
+          )
+        }
+      }
+    }
+
+    stage('Run script') {
+      steps {
+        script {
+          docker.image("sanity-python:${BUILD_NUMBER}").inside {
+            sh 'python brain/sli_ver11.py'
+          }
+        }
       }
     }
   }
