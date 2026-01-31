@@ -271,6 +271,7 @@ def main():
 
     logger.info(f"The multiplicity check is set at {MULTIPLICITY_PARAMETER}")
     logger.info(f"The internal debug mode is set at {DEBUG_MODE}")
+    logger.info(f"The strangleness is set at {STRANGLENESS}")
 
     #Master list contains all the possible permutations and combinations possible for 4 colours to be placed on 6 faces
     master_list = creating_the_block()
