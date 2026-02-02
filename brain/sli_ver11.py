@@ -126,66 +126,69 @@ def final_cook(master_list,sets):
     permflag={'w':0,'x':0,'y':0}
     logger.debug(f"No\t\tFlag0\t\tFlag1\t\tPermFlag\t\tLen")
     found=False
-    for w,a in enumerate(master_list):
-        perm_list_w=sf.check_perms([a])
-        for x,b in enumerate(master_list):
+    try:
+        for w,a in enumerate(master_list):
+            perm_list_w=sf.check_perms([a])
+            for x,b in enumerate(master_list):
 
-            if x <= w:
-                continue
-            if b in perm_list_w:
-                permflag['w']+=1
-                continue
-            if x not in sets[w]:
-                continue
-            if w not in sets[x]:
-                continue
-
-            ##Finding y
-            perm_list_x=perm_list_w+sf.check_perms([b])
-            y_all = sets[w] & sets[x]
-
-            for y in y_all:
-                c=master_list[y]
-                flag0+=1
-                if y <= x:
+                if x <= w:
                     continue
-                if c in perm_list_x:
-                    permflag['x'] += 1
+                if b in perm_list_w:
+                    permflag['w']+=1
+                    continue
+                if x not in sets[w]:
+                    continue
+                if w not in sets[x]:
                     continue
 
-                if w in sets[y] and x in sets[y]:
-                    flag1+=1
-                    z_all = sets[w] & sets[x] & sets[y]
-                    perm_list_y=perm_list_x+sf.check_perms([master_list[y]])
-                    # if len(z_all) > 1:
-                    #     flag = True
+                ##Finding y
+                perm_list_x=perm_list_w+sf.check_perms([b])
+                y_all = sets[w] & sets[x]
 
-                    for z in z_all:
-                        d=master_list[z]
-                        if z <= y:
-                            continue
-                        if d in perm_list_y:
-                            permflag['y'] += 1
-                            continue
-                        #c=master_list[y]
-                        #d=master_list[z]
-                        #arr.append([a,b,c,d])
-                        arr.append([w,x,y,z])
-                else:
-                    continue
+                for y in y_all:
+                    c=master_list[y]
+                    flag0+=1
+                    if y <= x:
+                        continue
+                    if c in perm_list_x:
+                        permflag['x'] += 1
+                        continue
 
-            # # For debugging
-            if DEBUG_MODE and x > 5:
-                found=True
+                    if w in sets[y] and x in sets[y]:
+                        flag1+=1
+                        z_all = sets[w] & sets[x] & sets[y]
+                        perm_list_y=perm_list_x+sf.check_perms([master_list[y]])
+                        # if len(z_all) > 1:
+                        #     flag = True
+
+                        for z in z_all:
+                            d=master_list[z]
+                            if z <= y:
+                                continue
+                            if d in perm_list_y:
+                                permflag['y'] += 1
+                                continue
+                            #c=master_list[y]
+                            #d=master_list[z]
+                            #arr.append([a,b,c,d])
+                            arr.append([w,x,y,z])
+                    else:
+                        continue
+
+                # # For debugging
+                if DEBUG_MODE and x > 5:
+                    found=True
+                    break
+
+            print(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}",end="\r")
+            if found:
                 break
 
-        print(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}",end="\r")
-        if found:
-            break
-
-    print("\n")
-    logger.debug(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}")
-
+        print("\n")
+        logger.debug(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}")
+    except KeyboardInterrupt:
+        logger.debug(f"{w:0>8,d}\t{flag0:0>8,d}\t{flag1:0>8,d}\t{len(arr):0>9,d}\t{permflag}\t{len(arr)}")
+        logger.info(f'Interrupted by the user, will continue with whatever is there!')
     return arr
 
 @time_taken
@@ -200,31 +203,35 @@ def sort(final_solution,master_list,compatible_blocks):
     sos_list=[]
     least_sos=[]
     sos1=4
-    for pos, cook in enumerate(final_solution):
-        w,x,y,z=cook
-        a=master_list[w]
-        b=master_list[x]
-        c=master_list[y]
-        d=master_list[z]
-        sos = sf.final_check_v9([a, b, c, d], rotation_list, STRANGLENESS)#, layer_list)
-        #sos=sf.final_check_v11([a,b,c,d],rotation_list)
-        #sos=sf.master_check([a, b, c, d],rotation_list,master_list,compatible_blocks)
-        # for json
-        dict1 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
-                 "Flags": sos, "Position": [w, x, y, z]}
-        sos_list.append(dict1)
-
-
-        if sos <= sos1:
-            sos1 = sos
-            dict2 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
+    try:
+        for pos, cook in enumerate(final_solution):
+            w,x,y,z=cook
+            a=master_list[w]
+            b=master_list[x]
+            c=master_list[y]
+            d=master_list[z]
+            sos = sf.final_check_v9([a, b, c, d], rotation_list, STRANGLENESS)#, layer_list)
+            #sos=sf.final_check_v11([a,b,c,d],rotation_list)
+            #sos=sf.master_check([a, b, c, d],rotation_list,master_list,compatible_blocks)
+            # for json
+            dict1 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
                      "Flags": sos, "Position": [w, x, y, z]}
-            least_sos.append(dict2)
+            sos_list.append(dict1)
 
-        print(f"{w:04} {x:04} {y:04} {z:04} {sos}  {sos1}  {len(least_sos)= }" ,end="\r")
 
-    least_sos = [a for a in least_sos if a["Flags"] <= sos1]
-    print("\n")
+            if sos <= sos1:
+                sos1 = sos
+                dict2 = {"Pos": pos, "List0": a, "List1": b, "List2": c, "List3": d,
+                         "Flags": sos, "Position": [w, x, y, z]}
+                least_sos.append(dict2)
+
+            print(f"{w:04} {x:04} {y:04} {z:04} {sos}  {sos1}  {len(least_sos)= }" ,end="\r")
+
+
+        print("\n")
+    except KeyboardInterrupt:
+        logger.info(f"Interrupted by the user")
+        least_sos = [a for a in least_sos if a["Flags"] <= sos1]
     return  sos_list,least_sos
 
 @time_taken
